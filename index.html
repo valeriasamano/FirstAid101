@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FirstAid101 - Guía del Paramédico</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 font-sans leading-tight">
+
+    <!-- Header Fijo -->
+    <nav class="bg-red-600 text-white p-4 sticky top-0 z-50 shadow-lg">
+        <div class="max-w-md mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <i class="fas fa-star-of-life animate-pulse"></i>
+                <h1 class="font-black uppercase tracking-tighter italic">FirstAid101</h1>
+            </div>
+            <span class="text-[10px] bg-red-800 px-2 py-1 rounded-md font-bold">PROTOCOLO ACTIVO</span>
+        </div>
+    </nav>
+
+    <main class="max-w-md mx-auto p-4 space-y-4">
+        
+        <!-- Sección de Emergencia Rápida -->
+        <div class="grid grid-cols-2 gap-3">
+            <button onclick="showModal('rcp')" class="bg-white p-4 rounded-2xl shadow-sm border-b-4 border-red-500 flex flex-col items-center gap-2 active:scale-95 transition">
+                <i class="fas fa-heartbeat text-red-500 text-xl"></i>
+                <span class="text-[10px] font-black uppercase">RCP Adulto</span>
+            </button>
+            <button onclick="showModal('trauma')" class="bg-white p-4 rounded-2xl shadow-sm border-b-4 border-amber-500 flex flex-col items-center gap-2 active:scale-95 transition">
+                <i class="fas fa-user-injured text-amber-500 text-xl"></i>
+                <span class="text-[10px] font-black uppercase">Trauma</span>
+            </button>
+        </div>
+
+        <!-- Escala de Glasgow (Interactiva) -->
+        <section class="bg-white rounded-3xl p-6 shadow-sm border border-slate-100">
+            <h2 class="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
+                <i class="fas fa-brain"></i> Escala de Glasgow (GCS)
+            </h2>
+            <div class="space-y-2">
+                <details class="group border-b border-slate-50 pb-2">
+                    <summary class="flex justify-between items-center cursor-pointer font-bold text-sm italic py-2">
+                        Apertura Ocular (1-4)
+                        <i class="fas fa-chevron-down text-[10px] transition-transform group-open:rotate-180"></i>
+                    </summary>
+                    <div class="text-[11px] text-slate-600 space-y-1 pt-2 pl-2 border-l-2 border-blue-500">
+                        <p>4. Espontánea</p>
+                        <p>3. Al orden verbal</p>
+                        <p>2. Al dolor</p>
+                        <p>1. Ninguna</p>
+                    </div>
+                </details>
+                <details class="group border-b border-slate-50 pb-2">
+                    <summary class="flex justify-between items-center cursor-pointer font-bold text-sm italic py-2">
+                        Respuesta Verbal (1-5)
+                        <i class="fas fa-chevron-down text-[10px] transition-transform group-open:rotate-180"></i>
+                    </summary>
+                    <div class="text-[11px] text-slate-600 space-y-1 pt-2 pl-2 border-l-2 border-green-500">
+                        <p>5. Orientado</p>
+                        <p>4. Desorientado/Confuso</p>
+                        <p>3. Palabras inapropiadas</p>
+                        <p>2. Sonidos incomprensibles</p>
+                        <p>1. Ninguna</p>
+                    </div>
+                </details>
+            </div>
+        </section>
+
+        <!-- Calculadora de Microgoteo Rápida -->
+        <section class="bg-slate-900 text-white rounded-3xl p-6 shadow-xl">
+            <h2 class="text-[10px] font-black text-blue-400 uppercase tracking-widest mb-4">Calculadora de Infusión</h2>
+            <div class="space-y-4">
+                <div>
+                    <label class="text-[10px] uppercase font-bold opacity-60">Volumen (ml)</label>
+                    <input type="number" id="vol" class="w-full bg-slate-800 border-none rounded-xl p-3 mt-1 text-sm outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: 500">
+                </div>
+                <div>
+                    <label class="text-[10px] uppercase font-bold opacity-60">Tiempo (horas)</label>
+                    <input type="number" id="hrs" class="w-full bg-slate-800 border-none rounded-xl p-3 mt-1 text-sm outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: 8">
+                </div>
+                <button onclick="calcGoteo()" class="w-full bg-blue-600 py-3 rounded-xl font-black text-xs uppercase tracking-widest shadow-lg shadow-blue-900/20 active:scale-95 transition">Calcular Gotas/Min</button>
+                <div id="res" class="text-center text-2xl font-light italic text-blue-400">--</div>
+            </div>
+        </section>
+
+        <!-- Triaje START -->
+        <section class="bg-white rounded-3xl p-6 shadow-sm border border-slate-100 mb-20">
+            <h2 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4 italic text-center">Método de Triaje START</h2>
+            <div class="flex flex-col gap-2">
+                <div class="flex items-center gap-3 p-3 bg-red-50 rounded-xl">
+                    <div class="w-4 h-4 rounded-full bg-red-600"></div>
+                    <span class="text-xs font-bold text-red-700 uppercase">Inmediato (Rojo)</span>
+                </div>
+                <div class="flex items-center gap-3 p-3 bg-amber-50 rounded-xl">
+                    <div class="w-4 h-4 rounded-full bg-amber-500"></div>
+                    <span class="text-xs font-bold text-amber-700 uppercase">Diferido (Amarillo)</span>
+                </div>
+                <div class="flex items-center gap-3 p-3 bg-emerald-50 rounded-xl">
+                    <div class="w-4 h-4 rounded-full bg-emerald-500"></div>
+                    <span class="text-xs font-bold text-emerald-700 uppercase">Leve (Verde)</span>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer de Información Personal -->
+    <footer class="bg-white border-t border-slate-200 p-6 text-center">
+        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Desarrollado por</p>
+        <p class="text-sm font-bold italic text-slate-700">Ana Valeria Sámano Ríos</p>
+        <p class="text-[9px] text-slate-400 uppercase mt-1">Biomedical Engineering Student @ ITESM</p>
+    </footer>
+
+    <script>
+        function calcGoteo() {
+            const v = document.getElementById('vol').value;
+            const h = document.getElementById('hrs').value;
+            if(v && h) {
+                // Constante de goteo normogotero (20 gtt/ml) -> (V * 20) / (H * 60)
+                const res = (v * 20) / (h * 60);
+                document.getElementById('res').innerText = Math.round(res) + " gtt/min";
+            }
+        }
+
+        function showModal(tipo) {
+            alert("Cargando protocolo de " + tipo.toUpperCase() + "...\n(Aquí puedes añadir más detalles interactivos luego)");
+        }
+    </script>
+</body>
+</html>

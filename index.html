@@ -1,137 +1,149 @@
 <!DOCTYPE html>
 <html lang="es">
+<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FirstAid101 - Guía del Paramédico</title>
+    <title>FirstAid101 -Guía para Paramédicos </title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        .glass-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(226, 232, 240, 0.8);
-        }
+        .page { display: none; }
+        .page.active { display: block; animation: fadeIn 0.3s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .nav-item.active { color: #ef4444; border-top: 2px solid #ef4444; }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-900 font-sans leading-tight">
+<body class="bg-slate-50 text-slate-900 font-sans pb-20">
 
-    <!-- Header Fijo -->
-    <nav class="bg-red-600 text-white p-4 sticky top-0 z-50 shadow-lg">
+    <!-- Header -->
+    <nav class="bg-red-600 text-white p-4 sticky top-0 z-50 shadow-md">
         <div class="max-w-md mx-auto flex justify-between items-center">
-            <div class="flex items-center gap-2">
-                <i class="fas fa-star-of-life animate-pulse"></i>
-                <h1 class="font-black uppercase tracking-tighter italic">FirstAid101</h1>
-            </div>
-            <span class="text-[10px] bg-red-800 px-2 py-1 rounded-md font-bold">PROTOCOLO ACTIVO</span>
+            <h1 id="nav-title" class="font-black uppercase italic tracking-tighter">FirstAid101</h1>
+            <i class="fas fa-star-of-life animate-pulse text-xs"></i>
         </div>
     </nav>
 
-    <main class="max-w-md mx-auto p-4 space-y-4">
+    <!-- CONTENIDO -->
+    <main class="max-w-md mx-auto p-4">
         
-        <!-- Sección de Emergencia Rápida -->
-        <div class="grid grid-cols-2 gap-3">
-            <button onclick="showModal('rcp')" class="bg-white p-4 rounded-2xl shadow-sm border-b-4 border-red-500 flex flex-col items-center gap-2 active:scale-95 transition">
-                <i class="fas fa-heartbeat text-red-500 text-xl"></i>
-                <span class="text-[10px] font-black uppercase">RCP Adulto</span>
-            </button>
-            <button onclick="showModal('trauma')" class="bg-white p-4 rounded-2xl shadow-sm border-b-4 border-amber-500 flex flex-col items-center gap-2 active:scale-95 transition">
-                <i class="fas fa-user-injured text-amber-500 text-xl"></i>
-                <span class="text-[10px] font-black uppercase">Trauma</span>
-            </button>
-        </div>
+        <!-- SECCIÓN 1: INICIO (Calculadoras y Escalas) -->
+        <section id="home" class="page active space-y-6">
+            <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
+                <h2 class="text-[10px] font-black text-blue-600 uppercase tracking-widest mb-4 italic">Protocolos Rápidos</h2>
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="p-4 bg-red-50 rounded-2xl border border-red-100">
+                        <p class="text-xs font-bold text-red-700">RCP Adulto</p>
+                        <p class="text-[9px] text-red-500 uppercase mt-1">30:2 | 100-120 lpm</p>
+                    </div>
+                    <div class="p-4 bg-amber-50 rounded-2xl border border-amber-100">
+                        <p class="text-xs font-bold text-amber-700">SAMPLER</p>
+                        <p class="text-[9px] text-amber-500 uppercase mt-1">Historia Clínica</p>
+                    </div>
+                </div>
+            </div>
 
-        <!-- Escala de Glasgow (Interactiva) -->
-        <section class="bg-white rounded-3xl p-6 shadow-sm border border-slate-100">
-            <h2 class="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
-                <i class="fas fa-brain"></i> Escala de Glasgow (GCS)
-            </h2>
+            <div class="bg-slate-900 text-white rounded-3xl p-6 shadow-xl">
+                <h2 class="text-[10px] font-black text-blue-400 uppercase tracking-widest mb-4">Calculadora de Goteo</h2>
+                <div class="space-y-3">
+                    <input type="number" id="vol" placeholder="Volumen (ml)" class="w-full bg-slate-800 border-none rounded-xl p-3 text-sm">
+                    <input type="number" id="hrs" placeholder="Tiempo (horas)" class="w-full bg-slate-800 border-none rounded-xl p-3 text-sm">
+                    <button onclick="calcGoteo()" class="w-full bg-blue-600 py-3 rounded-xl font-black text-xs uppercase tracking-widest">Calcular</button>
+                    <div id="res" class="text-center text-xl font-light text-blue-400 mt-2">-- gtt/min</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: GLOSARIO -->
+        <section id="glosario" class="page space-y-4">
+            <h2 class="text-xl font-bold italic text-slate-800">Glosario Técnico</h2>
             <div class="space-y-2">
-                <details class="group border-b border-slate-50 pb-2">
-                    <summary class="flex justify-between items-center cursor-pointer font-bold text-sm italic py-2">
-                        Apertura Ocular (1-4)
-                        <i class="fas fa-chevron-down text-[10px] transition-transform group-open:rotate-180"></i>
-                    </summary>
-                    <div class="text-[11px] text-slate-600 space-y-1 pt-2 pl-2 border-l-2 border-blue-500">
-                        <p>4. Espontánea</p>
-                        <p>3. Al orden verbal</p>
-                        <p>2. Al dolor</p>
-                        <p>1. Ninguna</p>
-                    </div>
-                </details>
-                <details class="group border-b border-slate-50 pb-2">
-                    <summary class="flex justify-between items-center cursor-pointer font-bold text-sm italic py-2">
-                        Respuesta Verbal (1-5)
-                        <i class="fas fa-chevron-down text-[10px] transition-transform group-open:rotate-180"></i>
-                    </summary>
-                    <div class="text-[11px] text-slate-600 space-y-1 pt-2 pl-2 border-l-2 border-green-500">
-                        <p>5. Orientado</p>
-                        <p>4. Desorientado/Confuso</p>
-                        <p>3. Palabras inapropiadas</p>
-                        <p>2. Sonidos incomprensibles</p>
-                        <p>1. Ninguna</p>
-                    </div>
-                </details>
+                <div class="bg-white p-4 rounded-2xl border border-slate-100">
+                    <p class="font-bold text-blue-600 text-sm">Anisocoria</p>
+                    <p class="text-xs text-slate-500 italic">Desigualdad en el tamaño de las pupilas.</p>
+                </div>
+                <div class="bg-white p-4 rounded-2xl border border-slate-100">
+                    <p class="font-bold text-blue-600 text-sm">Bradipnea</p>
+                    <p class="text-xs text-slate-500 italic">Frecuencia respiratoria anormalmente baja.</p>
+                </div>
+                <div class="bg-white p-4 rounded-2xl border border-slate-100">
+                    <p class="font-bold text-blue-600 text-sm">Hipoxia</p>
+                    <p class="text-xs text-slate-500 italic">Deficiencia de oxígeno en la sangre o tejidos.</p>
+                </div>
             </div>
         </section>
 
-        <!-- Calculadora de Microgoteo Rápida -->
-        <section class="bg-slate-900 text-white rounded-3xl p-6 shadow-xl">
-            <h2 class="text-[10px] font-black text-blue-400 uppercase tracking-widest mb-4">Calculadora de Infusión</h2>
+        <!-- SECCIÓN 3: RECURSOS Y VIDEOS -->
+        <section id="recursos" class="page space-y-6">
+            <h2 class="text-xl font-bold italic text-slate-800">Recursos Multimedia</h2>
+            
             <div class="space-y-4">
-                <div>
-                    <label class="text-[10px] uppercase font-bold opacity-60">Volumen (ml)</label>
-                    <input type="number" id="vol" class="w-full bg-slate-800 border-none rounded-xl p-3 mt-1 text-sm outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: 500">
+                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Videos de Entrenamiento</p>
+                <!-- Video Placeholder -->
+                <div class="aspect-video bg-slate-200 rounded-3xl flex items-center justify-center overflow-hidden border border-slate-200 relative">
+                    <i class="fab fa-youtube text-4xl text-red-600 opacity-80"></i>
+                    <p class="absolute bottom-4 text-[10px] font-bold text-slate-500 italic uppercase tracking-tighter">Cómo usar un DEA</p>
                 </div>
-                <div>
-                    <label class="text-[10px] uppercase font-bold opacity-60">Tiempo (horas)</label>
-                    <input type="number" id="hrs" class="w-full bg-slate-800 border-none rounded-xl p-3 mt-1 text-sm outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: 8">
+
+                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-6">Documentación PDF</p>
+                <div class="grid grid-cols-1 gap-3">
+                    <a href="#" class="flex items-center justify-between p-4 bg-white rounded-2xl border border-slate-100 shadow-sm">
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-file-pdf text-red-500"></i>
+                            <span class="text-xs font-bold">Guía AHA 2025</span>
+                        </div>
+                        <i class="fas fa-download text-slate-300 text-xs"></i>
+                    </a>
                 </div>
-                <button onclick="calcGoteo()" class="w-full bg-blue-600 py-3 rounded-xl font-black text-xs uppercase tracking-widest shadow-lg shadow-blue-900/20 active:scale-95 transition">Calcular Gotas/Min</button>
-                <div id="res" class="text-center text-2xl font-light italic text-blue-400">--</div>
             </div>
         </section>
 
-        <!-- Triaje START -->
-        <section class="bg-white rounded-3xl p-6 shadow-sm border border-slate-100 mb-20">
-            <h2 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4 italic text-center">Método de Triaje START</h2>
-            <div class="flex flex-col gap-2">
-                <div class="flex items-center gap-3 p-3 bg-red-50 rounded-xl">
-                    <div class="w-4 h-4 rounded-full bg-red-600"></div>
-                    <span class="text-xs font-bold text-red-700 uppercase">Inmediato (Rojo)</span>
-                </div>
-                <div class="flex items-center gap-3 p-3 bg-amber-50 rounded-xl">
-                    <div class="w-4 h-4 rounded-full bg-amber-500"></div>
-                    <span class="text-xs font-bold text-amber-700 uppercase">Diferido (Amarillo)</span>
-                </div>
-                <div class="flex items-center gap-3 p-3 bg-emerald-50 rounded-xl">
-                    <div class="w-4 h-4 rounded-full bg-emerald-500"></div>
-                    <span class="text-xs font-bold text-emerald-700 uppercase">Leve (Verde)</span>
-                </div>
-            </div>
-        </section>
     </main>
 
-    <!-- Footer de Información Personal -->
-    <footer class="bg-white border-t border-slate-200 p-6 text-center">
-        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Desarrollado por</p>
-        <p class="text-sm font-bold italic text-slate-700">Ana Valeria Sámano Ríos</p>
-        <p class="text-[9px] text-slate-400 uppercase mt-1">Biomedical Engineering Student @ ITESM</p>
-    </footer>
+    <!-- NAVEGACIÓN INFERIOR (Tab Bar) -->
+    <div class="fixed bottom-0 inset-x-0 bg-white border-t border-slate-200 p-2 flex justify-around items-center z-50">
+        <button onclick="switchPage('home', this)" class="nav-item active flex flex-col items-center p-2 transition-all">
+            <i class="fas fa-briefcase-medical text-lg"></i>
+            <span class="text-[8px] font-black uppercase mt-1">Inicio</span>
+        </button>
+        <button onclick="switchPage('glosario', this)" class="nav-item flex flex-col items-center p-2 transition-all text-slate-400">
+            <i class="fas fa-book-medical text-lg"></i>
+            <span class="text-[8px] font-black uppercase mt-1">Glosario</span>
+        </button>
+        <button onclick="switchPage('recursos', this)" class="nav-item flex flex-col items-center p-2 transition-all text-slate-400">
+            <i class="fas fa-play-circle text-lg"></i>
+            <span class="text-[8px] font-black uppercase mt-1">Recursos</span>
+        </button>
+    </div>
 
     <script>
+        function switchPage(pageId, element) {
+            // Ocultar todas las páginas
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            // Mostrar página seleccionada
+            document.getElementById(pageId).classList.add('active');
+            
+            // Actualizar estilo de botones
+            document.querySelectorAll('.nav-item').forEach(btn => {
+                btn.classList.remove('active', 'text-red-500');
+                btn.classList.add('text-slate-400');
+            });
+            element.classList.add('active', 'text-red-500');
+            element.classList.remove('text-slate-400');
+
+            // Actualizar título
+            const titles = { home: 'FirstAid101', glosario: 'GLOSARIO', recursos: 'RECURSOS' };
+            document.getElementById('nav-title').innerText = titles[pageId];
+        }
+
         function calcGoteo() {
             const v = document.getElementById('vol').value;
             const h = document.getElementById('hrs').value;
             if(v && h) {
-                // Constante de goteo normogotero (20 gtt/ml) -> (V * 20) / (H * 60)
                 const res = (v * 20) / (h * 60);
                 document.getElementById('res').innerText = Math.round(res) + " gtt/min";
             }
-        }
-
-        function showModal(tipo) {
-            alert("Cargando protocolo de " + tipo.toUpperCase() + "...\n(Aquí puedes añadir más detalles interactivos luego)");
         }
     </script>
 </body>

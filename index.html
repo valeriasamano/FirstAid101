@@ -1,149 +1,139 @@
 <!DOCTYPE html>
 <html lang="es">
-<html lang="en">
-<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FirstAid101 -Guía para Paramédicos </title>
+    <title>FirstAid101 | Paramedic Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        .page { display: none; }
-        .page.active { display: block; animation: fadeIn 0.3s ease-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .nav-item.active { color: #ef4444; border-top: 2px solid #ef4444; }
+        body { background-color: #F3F4F6; }
+        .sidebar-icon { @apply w-10 h-10 flex items-center justify-center rounded-full text-gray-400 hover:bg-blue-50 hover:text-blue-600 transition-all; }
+        .sidebar-icon.active { @apply bg-blue-600 text-white shadow-lg shadow-blue-200; }
+        .card { @apply bg-white rounded-[2rem] p-6 shadow-sm border border-gray-100; }
+        .status-card { @apply relative overflow-hidden rounded-3xl p-4 bg-white border border-gray-100 flex flex-col justify-between h-40; }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-900 font-sans pb-20">
+<body class="flex h-screen overflow-hidden">
 
-    <!-- Header -->
-    <nav class="bg-red-600 text-white p-4 sticky top-0 z-50 shadow-md">
-        <div class="max-w-md mx-auto flex justify-between items-center">
-            <h1 id="nav-title" class="font-black uppercase italic tracking-tighter">FirstAid101</h1>
-            <i class="fas fa-star-of-life animate-pulse text-xs"></i>
+    <!-- BARRA LATERAL (Izquierda) -->
+    <aside class="w-20 bg-white border-r border-gray-100 flex flex-col items-center py-8 gap-8">
+        <div class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center font-bold text-xs">M+</div>
+        <div class="flex flex-col gap-4">
+            <button onclick="switchTab('home')" id="btn-home" class="sidebar-icon active"><i class="fas fa-th-large"></i></button>
+            <button onclick="switchTab('glosario')" id="btn-glosario" class="sidebar-icon"><i class="fas fa-book-medical"></i></button>
+            <button onclick="switchTab('recursos')" id="btn-recursos" class="sidebar-icon"><i class="fas fa-play-circle"></i></button>
+            <button onclick="switchTab('profile')" id="btn-profile" class="sidebar-icon"><i class="fas fa-user"></i></button>
         </div>
-    </nav>
+        <div class="mt-auto">
+            <button class="w-10 h-10 bg-gray-50 rounded-full text-gray-300"><i class="fas fa-plus"></i></button>
+        </div>
+    </aside>
 
-    <!-- CONTENIDO -->
-    <main class="max-w-md mx-auto p-4">
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="flex-1 flex flex-col overflow-y-auto">
         
-        <!-- SECCIÓN 1: INICIO (Calculadoras y Escalas) -->
-        <section id="home" class="page active space-y-6">
-            <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
-                <h2 class="text-[10px] font-black text-blue-600 uppercase tracking-widest mb-4 italic">Protocolos Rápidos</h2>
-                <div class="grid grid-cols-2 gap-3">
-                    <div class="p-4 bg-red-50 rounded-2xl border border-red-100">
-                        <p class="text-xs font-bold text-red-700">RCP Adulto</p>
-                        <p class="text-[9px] text-red-500 uppercase mt-1">30:2 | 100-120 lpm</p>
-                    </div>
-                    <div class="p-4 bg-amber-50 rounded-2xl border border-amber-100">
-                        <p class="text-xs font-bold text-amber-700">SAMPLER</p>
-                        <p class="text-[9px] text-amber-500 uppercase mt-1">Historia Clínica</p>
-                    </div>
+        <!-- HEADER / BUSCADOR -->
+        <header class="p-8 flex justify-between items-center">
+            <div class="relative w-96">
+                <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                <input type="text" placeholder="Search resources, protocols..." class="w-full bg-white border-none rounded-2xl py-3 pl-12 pr-4 shadow-sm focus:ring-2 focus:ring-blue-100 outline-none text-sm">
+            </div>
+            <div class="flex items-center gap-4">
+                <button class="w-10 h-10 bg-blue-600 text-white rounded-full shadow-lg"><i class="fas fa-phone-alt"></i></button>
+                <button class="w-10 h-10 bg-white text-gray-400 rounded-full shadow-sm border border-gray-100"><i class="fas fa-bell"></i></button>
+                <div class="w-10 h-10 bg-blue-100 rounded-full overflow-hidden border-2 border-white shadow-sm">
+                    <img src="https://ui-avatars.com/api/?name=Ana+Valeria&background=0D8ABC&color=fff" alt="Profile">
                 </div>
             </div>
+        </header>
 
-            <div class="bg-slate-900 text-white rounded-3xl p-6 shadow-xl">
-                <h2 class="text-[10px] font-black text-blue-400 uppercase tracking-widest mb-4">Calculadora de Goteo</h2>
-                <div class="space-y-3">
-                    <input type="number" id="vol" placeholder="Volumen (ml)" class="w-full bg-slate-800 border-none rounded-xl p-3 text-sm">
-                    <input type="number" id="hrs" placeholder="Tiempo (horas)" class="w-full bg-slate-800 border-none rounded-xl p-3 text-sm">
-                    <button onclick="calcGoteo()" class="w-full bg-blue-600 py-3 rounded-xl font-black text-xs uppercase tracking-widest">Calcular</button>
-                    <div id="res" class="text-center text-xl font-light text-blue-400 mt-2">-- gtt/min</div>
-                </div>
-            </div>
-        </section>
-
-        <!-- SECCIÓN 2: GLOSARIO -->
-        <section id="glosario" class="page space-y-4">
-            <h2 class="text-xl font-bold italic text-slate-800">Glosario Técnico</h2>
-            <div class="space-y-2">
-                <div class="bg-white p-4 rounded-2xl border border-slate-100">
-                    <p class="font-bold text-blue-600 text-sm">Anisocoria</p>
-                    <p class="text-xs text-slate-500 italic">Desigualdad en el tamaño de las pupilas.</p>
-                </div>
-                <div class="bg-white p-4 rounded-2xl border border-slate-100">
-                    <p class="font-bold text-blue-600 text-sm">Bradipnea</p>
-                    <p class="text-xs text-slate-500 italic">Frecuencia respiratoria anormalmente baja.</p>
-                </div>
-                <div class="bg-white p-4 rounded-2xl border border-slate-100">
-                    <p class="font-bold text-blue-600 text-sm">Hipoxia</p>
-                    <p class="text-xs text-slate-500 italic">Deficiencia de oxígeno en la sangre o tejidos.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- SECCIÓN 3: RECURSOS Y VIDEOS -->
-        <section id="recursos" class="page space-y-6">
-            <h2 class="text-xl font-bold italic text-slate-800">Recursos Multimedia</h2>
+        <div id="content-area" class="px-8 pb-8 grid grid-cols-12 gap-8">
             
-            <div class="space-y-4">
-                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Videos de Entrenamiento</p>
-                <!-- Video Placeholder -->
-                <div class="aspect-video bg-slate-200 rounded-3xl flex items-center justify-center overflow-hidden border border-slate-200 relative">
-                    <i class="fab fa-youtube text-4xl text-red-600 opacity-80"></i>
-                    <p class="absolute bottom-4 text-[10px] font-bold text-slate-500 italic uppercase tracking-tighter">Cómo usar un DEA</p>
+            <!-- COLUMNA IZQUIERDA (Título y Círculo) -->
+            <div class="col-span-12 lg:col-span-5 space-y-8">
+                <div class="flex gap-4">
+                    <span class="bg-gray-200 px-4 py-1 rounded-full text-[10px] font-bold text-gray-600 uppercase">Diagnose</span>
+                    <span class="bg-gray-200 px-4 py-1 rounded-full text-[10px] font-bold text-gray-600 uppercase">Protocols</span>
                 </div>
-
-                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-6">Documentación PDF</p>
-                <div class="grid grid-cols-1 gap-3">
-                    <a href="#" class="flex items-center justify-between p-4 bg-white rounded-2xl border border-slate-100 shadow-sm">
-                        <div class="flex items-center gap-3">
-                            <i class="fas fa-file-pdf text-red-500"></i>
-                            <span class="text-xs font-bold">Guía AHA 2025</span>
-                        </div>
-                        <i class="fas fa-download text-slate-300 text-xs"></i>
-                    </a>
+                <h1 class="text-7xl font-bold text-gray-900 leading-tight">Quick<br>Reference</h1>
+                
+                <!-- El Círculo del Estetoscopio -->
+                <div class="relative w-80 h-80 mx-auto bg-white rounded-full shadow-inner border-[16px] border-gray-50 flex items-center justify-center">
+                    <div class="text-center space-y-2">
+                        <i class="fas fa-star-of-life text-blue-600 text-6xl animate-pulse"></i>
+                        <p class="text-[10px] font-black text-gray-300 uppercase tracking-[0.2em]">Ready to serve</p>
+                    </div>
+                    <!-- Pequeño corazón flotante -->
+                    <div class="absolute bottom-10 right-10 w-12 h-12 bg-red-500 rounded-full flex items-center justify-center text-white shadow-lg">
+                        <i class="fas fa-heart"></i>
+                    </div>
                 </div>
             </div>
-        </section>
 
+            <!-- COLUMNA DERECHA (Cards) -->
+            <div class="col-span-12 lg:col-span-7 space-y-8">
+                
+                <!-- Sección superior: Signos/Métricas -->
+                <div>
+                    <h2 class="text-blue-600 font-bold mb-6 flex items-center gap-2">
+                        <span class="w-1.5 h-1.5 bg-blue-600 rounded-full"></span> Vital Parameters
+                    </h2>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="status-card">
+                            <div class="flex justify-between items-start">
+                                <span class="text-[10px] font-bold text-gray-400 uppercase">Adult HR</span>
+                                <i class="fas fa-heartbeat text-blue-100 text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-2xl font-bold">60-100</p>
+                                <p class="text-[10px] text-gray-400">BPM Normal Range</p>
+                            </div>
+                        </div>
+                        <div class="status-card">
+                            <div class="flex justify-between items-start">
+                                <span class="text-[10px] font-bold text-gray-400 uppercase">SpO2</span>
+                                <i class="fas fa-lungs text-blue-100 text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-2xl font-bold">> 94%</p>
+                                <p class="text-[10px] text-gray-400">Normal Oxygenation</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sección inferior: Recursos -->
+                <div>
+                    <h2 class="text-gray-900 font-bold mb-6 flex items-center gap-2">
+                        <span class="w-1.5 h-1.5 bg-blue-600 rounded-full"></span> Training Resources
+                    </h2>
+                    <div class="grid grid-cols-3 gap-4">
+                        <div class="bg-blue-600 rounded-[2rem] p-4 text-white flex flex-col justify-between h-48 active:scale-95 transition">
+                            <i class="fas fa-notes-medical text-2xl opacity-50"></i>
+                            <p class="text-sm font-bold">Protocolo<br>RCP 2025</p>
+                        </div>
+                        <div class="bg-white rounded-[2rem] p-4 border border-gray-100 flex flex-col justify-between h-48 shadow-sm">
+                            <i class="fas fa-calculator text-2xl text-blue-600"></i>
+                            <p class="text-sm font-bold text-gray-800">Dosis<br>Calculadora</p>
+                        </div>
+                        <div class="bg-gray-900 rounded-[2rem] p-4 text-white flex flex-col justify-between h-48 active:scale-95 transition">
+                            <i class="fas fa-graduation-cap text-2xl opacity-50"></i>
+                            <p class="text-sm font-bold">Quiz de<br>Práctica</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
     </main>
 
-    <!-- NAVEGACIÓN INFERIOR (Tab Bar) -->
-    <div class="fixed bottom-0 inset-x-0 bg-white border-t border-slate-200 p-2 flex justify-around items-center z-50">
-        <button onclick="switchPage('home', this)" class="nav-item active flex flex-col items-center p-2 transition-all">
-            <i class="fas fa-briefcase-medical text-lg"></i>
-            <span class="text-[8px] font-black uppercase mt-1">Inicio</span>
-        </button>
-        <button onclick="switchPage('glosario', this)" class="nav-item flex flex-col items-center p-2 transition-all text-slate-400">
-            <i class="fas fa-book-medical text-lg"></i>
-            <span class="text-[8px] font-black uppercase mt-1">Glosario</span>
-        </button>
-        <button onclick="switchPage('recursos', this)" class="nav-item flex flex-col items-center p-2 transition-all text-slate-400">
-            <i class="fas fa-play-circle text-lg"></i>
-            <span class="text-[8px] font-black uppercase mt-1">Recursos</span>
-        </button>
-    </div>
-
     <script>
-        function switchPage(pageId, element) {
-            // Ocultar todas las páginas
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            // Mostrar página seleccionada
-            document.getElementById(pageId).classList.add('active');
-            
-            // Actualizar estilo de botones
-            document.querySelectorAll('.nav-item').forEach(btn => {
-                btn.classList.remove('active', 'text-red-500');
-                btn.classList.add('text-slate-400');
-            });
-            element.classList.add('active', 'text-red-500');
-            element.classList.remove('text-slate-400');
-
-            // Actualizar título
-            const titles = { home: 'FirstAid101', glosario: 'GLOSARIO', recursos: 'RECURSOS' };
-            document.getElementById('nav-title').innerText = titles[pageId];
-        }
-
-        function calcGoteo() {
-            const v = document.getElementById('vol').value;
-            const h = document.getElementById('hrs').value;
-            if(v && h) {
-                const res = (v * 20) / (h * 60);
-                document.getElementById('res').innerText = Math.round(res) + " gtt/min";
-            }
+        function switchTab(tab) {
+            // Lógica para cambiar contenido (puedes expandirla luego)
+            document.querySelectorAll('.sidebar-icon').forEach(i => i.classList.remove('active'));
+            document.getElementById('btn-' + tab).classList.add('active');
+            console.log("Cambiando a: " + tab);
         }
     </script>
 </body>
